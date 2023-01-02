@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class OwnerMapper implements RowMapper<Owner> {
-
     @Override
     public Owner mapRow(ResultSet rows, int rowNum) throws SQLException {
         return Owner.builder()

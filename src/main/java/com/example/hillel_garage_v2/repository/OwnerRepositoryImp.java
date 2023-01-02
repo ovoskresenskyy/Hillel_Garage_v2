@@ -26,66 +26,44 @@ public class OwnerRepositoryImp implements OwnerRepository {
     }
 
     @Override
-    public void save(Owner owner) {
-        jdbcTemplate.update(
-                OwnerQuery.SAVE.getQuery()
-                , owner.getName()
-                , owner.getAge());
+    public List<Owner> getAll() {
+        return jdbcTemplate.query(
+                OwnerQuery.GET_ALL.getQuery(),
+                new OwnerMapper());
     }
 
     @Override
-    public void update(Owner owner) {
-        jdbcTemplate.update(
-                OwnerQuery.UPDATE.getQuery()
-                , owner.getName()
-                , owner.getAge()
-                , owner.getId());
-    }
-
-    @Override
-    public void delete(int id) {
-        jdbcTemplate.update(
-                OwnerQuery.DELETE.getQuery()
-                , id);
-    }
-
-    @Override
-    public Owner getById(int id) {
+    public Owner findById(int id) {
         Owner owner = jdbcTemplate.queryForObject(
-                OwnerQuery.GET_BY_ID.getQuery()
-                , new OwnerMapper()
-                , id);
+                OwnerQuery.GET_BY_ID.getQuery(),
+                new OwnerMapper(),
+                id);
 
         if (owner == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner with this ID not found");
         return owner;
     }
 
     @Override
-    public Map<Owner, List<Car>> getAll() {
-        return jdbcTemplate.query(
-                OwnerQuery.GET_ALL.getQuery()
-                , (ResultSet rows) -> {
-                    HashMap<Owner, List<Car>> results = new HashMap<>();
-                    while (rows.next()) {
-                        Owner owner = Owner.builder()
-                                .id(rows.getInt("owner_id"))
-                                .name(rows.getString("owner_name"))
-                                .age(rows.getInt("owner_age"))
-                                .build();
+    public void save(Owner owner) {
+        jdbcTemplate.update(
+                OwnerQuery.SAVE.getQuery(),
+                owner.getName(),
+                owner.getAge());
+    }
 
-                        Car car = Car.builder()
-                                .id(rows.getInt("car_id"))
-                                .model(rows.getString("car_model"))
-                                .color(rows.getString("car_color"))
-                                .ownerID(rows.getInt("owner_id"))
-                                .build();
+    @Override
+    public void update(Owner owner) {
+        jdbcTemplate.update(
+                OwnerQuery.UPDATE.getQuery(),
+                owner.getName(),
+                owner.getAge(),
+                owner.getId());
+    }
 
-                        List<Car> cars = results.getOrDefault(owner, new LinkedList<>());
-                        cars.add(car);
-
-                        results.put(owner, cars);
-                    }
-                    return results;
-                });
+    @Override
+    public void delete(int id) {
+        jdbcTemplate.update(
+                OwnerQuery.DELETE.getQuery(),
+                id);
     }
 }
