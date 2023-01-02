@@ -1,7 +1,9 @@
 package com.example.hillel_garage_v2.controller;
 
 import com.example.hillel_garage_v2.model.Car;
+import com.example.hillel_garage_v2.model.Owner;
 import com.example.hillel_garage_v2.service.CarService;
+import com.example.hillel_garage_v2.service.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,10 +13,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/cars")
 public class CarController {
 
+    private final OwnerService ownerService;
     private final CarService carService;
 
     @Autowired
-    public CarController(CarService carService) {
+    public CarController(OwnerService ownerService, CarService carService) {
+        this.ownerService = ownerService;
         this.carService = carService;
     }
 
