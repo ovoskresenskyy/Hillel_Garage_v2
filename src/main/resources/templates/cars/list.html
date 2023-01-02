@@ -10,13 +10,17 @@
 </head>
 <body>
 <div>
-    <h3>Cars</h3>
-    <a th:href="@{/cars/add_new_form}" class="btn btn-primary btn-sm mb-3">Add Car</a>
+    <h1>Owner's cars</h1>
+    <h3>
+        Owner Name: <span th:text="${owner.name}"></span>
+        <p>
+            Age: <span th:text="${owner.age}"> </span>
+    </h3>
+    <a th:href="@{/cars/{owner_id}/add_new_form(owner_id=${owner.id})}" class="btn btn-primary btn-sm mb-3">Add Car</a>
     <table style="width:80%" border="1" class="table table-striped table-responsive-md">
         <thead>
         <tr>
             <th>ID</th>
-            <th>Owner ID</th>
             <th>Model</th>
             <th>Color</th>
             <th>Action</th>
@@ -26,7 +30,6 @@
         <tbody>
         <tr th:each="car: ${cars}">
             <td th:text="${car.id}"></td>
-            <td th:text="${car.ownerID}"></td>
             <td th:text="${car.model}"></td>
             <td th:text="${car.color}"></td>
             <td>
@@ -38,6 +41,7 @@
         </tr>
         </tbody>
     </table>
+    <a th:href="@{/owners}"> Back to Owner List</a>
 </div>
 </body>
 </html>

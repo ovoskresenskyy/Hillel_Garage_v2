@@ -8,7 +8,11 @@
 <body>
 <div class="container">
     <h2>Car updating</h2>
-
+    <h3>
+        Owner Name: <span th:text="${owner.name}"></span>
+        <p>
+            Age: <span th:text="${owner.age}"> </span>
+    </h3>
     <form action="#" th:action="@{/cars/update}" th:object="${car}" method="POST">
         <input type="hidden" th:field="*{id}" />
         <input type="hidden" th:field="*{ownerID}" />
@@ -19,7 +23,7 @@
 
     <hr>
 
-    <a th:href = "@{/cars}"> Back to Car List</a>
+    <a th:href="@{/cars/{owner_id}(owner_id=${owner.id})}">Back to Car List</a>
 </div>
 </body>
 </html>

@@ -9,7 +9,7 @@
 <div class="container">
     <h2>Owner updating</h2>
 
-    <form action="#" th:action="@{/owners}" th:object="${owner}" method="PUT">
+    <form action="#" th:action="@{/owners/update}" th:object="${owner}" method="POST">
         <input type="hidden" th:field="*{id}" />
         <input type="text" th:field="*{name}" class="form-control mb-4 col-4">
         <input type="number" th:field="*{age}" class="form-control mb-4 col-4">
