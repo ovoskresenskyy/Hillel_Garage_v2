@@ -14,7 +14,7 @@ public class CarMapper implements RowMapper<Car> {
                 .id(rows.getInt("id"))
                 .model(rows.getString("model"))
                 .color(rows.getString("color"))
-                .ownerID(rows.getInt("ownerID"))
+                .ownerID(rows.getInt("owner_id"))
                 .build();
     }
 }
