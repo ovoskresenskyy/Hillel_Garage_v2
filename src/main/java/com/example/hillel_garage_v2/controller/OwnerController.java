@@ -52,45 +52,4 @@ public class OwnerController {
         ownerService.delete(id);
         return "redirect:/owners";
     }
-
-    @GetMapping("/{id}/add_car_form")
-    public String addingCarForm(@PathVariable(value = "id") int ownerID,
-                             Model model) {
-        model.addAttribute("owner", ownerService.findById(ownerID));
-        model.addAttribute("car", Car.builder()
-                .ownerID(ownerID)
-                .build());
-        return "owners/cars/new";
-    }
-
-    @PostMapping("/{id}/save_car")
-    public String saveCar(@PathVariable(value = "id") int ownerID,
-                          @ModelAttribute("car") Car car) {
-        //ownerService.addCar(ownerID, car);
-        return "redirect:/owners";
-    }
-
-    @GetMapping("/update_car_form/{ownerID}/{id}")
-    public String ownersCarUpdateForm(@PathVariable(value = "ownerID") int ownerID,
-                                     @PathVariable(value = "id") int id,
-                             Model model) {
-        model.addAttribute("owner", ownerService.findById(ownerID));
-        model.addAttribute("car", carService.getCar(id));
-        return "owners/cars/update";
-    }
-
-    @PostMapping("/update_car")
-    public String updateCar(@ModelAttribute("car") Car car) {
-        carService.updateCar(car);
-        return "redirect:/owners";
-    }
-
-    @GetMapping("/delete_car/{ownerID}/{id}")
-    public String deleteCar(@PathVariable(value = "ownerID") int ownerID,
-                                 @PathVariable(value = "id") int id) {
-        //ownerService.deleteCar(ownerID, id);
-        return "redirect:/owners";
-    }
-
-
 }
