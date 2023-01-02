@@ -1,52 +1,40 @@
 package com.example.hillel_garage_v2.service;
 
 import com.example.hillel_garage_v2.model.Car;
-import org.springframework.http.HttpStatus;
+import com.example.hillel_garage_v2.repository.Dao.CarRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Service
 public class CarService {
-    private final List<Car> cars = new LinkedList<>();
-    private int carCounter;
 
-    public Car addCar(int ownerID, Car car) {
-//        car.setId(++carCounter);
-//        car.setOwnerID(ownerID);
-        cars.add(car);
-        return car;
+    private final CarRepository carRepository;
+
+    @Autowired
+    public CarService(CarRepository carRepository) {
+        this.carRepository = carRepository;
     }
 
-    public Car addCar(Car car) {
-        return addCar(0, car);
+    public List<Car> getAllByOwnerID(int ownerID) {
+        return carRepository.getAllByOwnerID(ownerID);
     }
 
-    public Car getCar(int id) {
-        for (Car car : cars) if (car.getId() == id) return car;
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Car with this ID not found");
+    public Car findById(int id) {
+        return carRepository.findById(id);
     }
 
-    public List<Car> getAll() {
-        return cars;
+    public void addNew(Car car) {
+        carRepository.save(car);
     }
 
-    public Car updateCar(Car incomingData) {
-        Car car = getCar(incomingData.getId());
-//        car.setModel(incomingData.getModel());
-//        car.setColor(incomingData.getColor());
-        return car;
+    public void update(Car incomingData) {
+        carRepository.update(incomingData);
     }
 
-    public Car deleteCar(int id) {
-        Car car = getCar(id);
-        cars.remove(car);
-        return car;
+    public void delete(int id) {
+        carRepository.delete(id);
     }
 
-    public void deleteOwnerCars(int ownerID) {
-        cars.removeIf(car -> car.getOwnerID() == ownerID);
-    }
 }
