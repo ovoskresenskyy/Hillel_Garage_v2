@@ -22,40 +22,46 @@ public class CarController {
         this.carService = carService;
     }
 
-    @GetMapping
-    public String getAllCars(Model model) {
-        model.addAttribute("cars", carService.getAll());
+    @GetMapping("/{owner_id}")
+    public String getAllByOwnerID(@PathVariable(value = "owner_id") int owner_id, Model model) {
+        model.addAttribute("owner", ownerService.findById(owner_id));
+        model.addAttribute("cars", carService.getAllByOwnerID(owner_id));
         return "cars/list";
     }
 
-    @GetMapping("/add_new_form")
-    public String addNewCar(Model model) {
-        model.addAttribute("car", Car.builder().build());
+    @GetMapping("/{owner_id}/add_new_form")
+    public String addNewCar(@PathVariable(value = "owner_id") int owner_id, Model model) {
+        model.addAttribute("owner", ownerService.findById(owner_id));
+        model.addAttribute("car", Car.builder()
+                .ownerID(owner_id)
+                .build());
         return "/cars/new";
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public String saveCar(@ModelAttribute("car") Car car) {
-        carService.addCar(car);
-        return "redirect:/cars";
+        carService.addNew(car);
+        return "redirect:/cars/" + car.getOwnerID();
     }
 
     @GetMapping("/update_form/{id}")
-    public String updateForm(@PathVariable(value = "id") int id,
-                             Model model) {
-        model.addAttribute("car", carService.getCar(id));
+    public String updateForm(@PathVariable(value = "id") int id, Model model) {
+        Car car = carService.findById(id);
+        model.addAttribute("car", car);
+        model.addAttribute("owner", ownerService.findById(car.getOwnerID()));
         return "cars/update";
     }
 
     @PostMapping("/update")
     public String updateCar(@ModelAttribute("car") Car car) {
-        carService.updateCar(car);
-        return "redirect:/cars";
+        carService.update(car);
+        return "redirect:/cars/" + car.getOwnerID();
     }
 
     @GetMapping("/delete/{id}")
     public String deleteCar(@PathVariable(value = "id") int id) {
-        carService.deleteCar(id);
-        return "redirect:/cars";
+        int ownerID = carService.findById(id).getOwnerID();
+        carService.delete(id);
+        return "redirect:/cars/" + ownerID;
     }
 }
