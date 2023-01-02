@@ -1,8 +1,6 @@
 package com.example.hillel_garage_v2.controller;
 
-import com.example.hillel_garage_v2.model.Car;
 import com.example.hillel_garage_v2.model.Owner;
-import com.example.hillel_garage_v2.service.CarService;
 import com.example.hillel_garage_v2.service.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,19 +10,16 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/owners")
 public class OwnerController {
-
     private final OwnerService ownerService;
-    private final CarService carService;
 
     @Autowired
-    public OwnerController(OwnerService ownerService, CarService carService) {
+    public OwnerController(OwnerService ownerService) {
         this.ownerService = ownerService;
-        this.carService = carService;
     }
 
     @GetMapping
     public String getAll(Model model) {
-        model.addAttribute("ownersAndCars", ownerService.getAll());
+        model.addAttribute("owners", ownerService.getAll());
         return "owners/list";
     }
 
@@ -46,7 +41,7 @@ public class OwnerController {
         return "owners/update";
     }
 
-    @PutMapping
+    @PostMapping("/update")
     public String updateOwner(@ModelAttribute("owner") Owner owner) {
         ownerService.update(owner);
         return "redirect:/owners";
