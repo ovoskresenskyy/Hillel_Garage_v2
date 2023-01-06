@@ -1,6 +1,5 @@
 package com.example.hillel_garage_v2.repository;
 
-import com.example.hillel_garage_v2.model.Car;
 import com.example.hillel_garage_v2.model.Owner;
 import com.example.hillel_garage_v2.repository.Dao.OwnerRepository;
 import com.example.hillel_garage_v2.repository.mapper.OwnerMapper;
@@ -10,11 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.sql.ResultSet;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class OwnerRepositoryImp implements OwnerRepository {
