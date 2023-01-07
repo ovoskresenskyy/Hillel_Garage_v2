@@ -52,13 +52,13 @@ public class CarController {
         return "cars/update";
     }
 
-    @PostMapping("/update")
+    @PutMapping
     public String updateCar(@ModelAttribute("car") Car car) {
         carService.update(car);
         return "redirect:/cars/" + car.getOwnerID();
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public String deleteCar(@PathVariable(value = "id") int id) {
         int ownerID = carService.findById(id).getOwnerID();
         carService.delete(id);

@@ -41,13 +41,13 @@ public class OwnerController {
         return "owners/update";
     }
 
-    @PostMapping("/update")
+    @PutMapping
     public String updateOwner(@ModelAttribute("owner") Owner owner) {
         ownerService.update(owner);
         return "redirect:/owners";
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public String deleteOwner(@PathVariable(value = "id") int id) {
         ownerService.delete(id);
         return "redirect:/owners";
