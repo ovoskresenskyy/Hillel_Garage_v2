@@ -29,7 +29,7 @@ public class CarController {
         return "cars/list";
     }
 
-    @GetMapping("/{owner_id}/add_new_form")
+    @GetMapping("/{owner_id}/registration")
     public String addNewCar(@PathVariable(value = "owner_id") int owner_id, Model model) {
         model.addAttribute("owner", ownerService.findById(owner_id));
         model.addAttribute("car", Car.builder()
@@ -44,7 +44,7 @@ public class CarController {
         return "redirect:/cars/" + car.getOwnerID();
     }
 
-    @GetMapping("/update_form/{id}")
+    @GetMapping("/{id}/updating")
     public String updateForm(@PathVariable(value = "id") int id, Model model) {
         Car car = carService.findById(id);
         model.addAttribute("car", car);
