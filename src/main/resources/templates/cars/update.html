@@ -13,7 +13,7 @@
         <p>
             Age: <span th:text="${owner.age}"> </span>
     </h3>
-    <form action="#" th:action="@{/cars/update}" th:object="${car}" method="POST">
+    <form action="#" th:action="@{/cars}" th:object="${car}" th:method="PUT">
         <input type="hidden" th:field="*{id}" />
         <input type="hidden" th:field="*{ownerID}" />
         <input type="text" th:field="*{model}" class="form-control mb-4 col-4">
