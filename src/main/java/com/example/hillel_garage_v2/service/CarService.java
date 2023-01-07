@@ -1,11 +1,14 @@
 package com.example.hillel_garage_v2.service;
 
 import com.example.hillel_garage_v2.model.Car;
-import com.example.hillel_garage_v2.repository.Dao.CarRepository;
+import com.example.hillel_garage_v2.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 public class CarService {
@@ -17,24 +20,19 @@ public class CarService {
         this.carRepository = carRepository;
     }
 
-    public List<Car> getAllByOwnerID(int ownerID) {
-        return carRepository.getAllByOwnerID(ownerID);
+    public List<Car> findAllByOwnerID(int ownerID) {
+        return carRepository.findAllByOwnerID(ownerID);
     }
 
     public Car findById(int id) {
-        return carRepository.findById(id);
+        return carRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
-    public void addNew(Car car) {
+    public void save(Car car) {
         carRepository.save(car);
     }
 
-    public void update(Car incomingData) {
-        carRepository.update(incomingData);
+    public void deleteById(int id) {
+        carRepository.deleteById(id);
     }
-
-    public void delete(int id) {
-        carRepository.delete(id);
-    }
-
 }

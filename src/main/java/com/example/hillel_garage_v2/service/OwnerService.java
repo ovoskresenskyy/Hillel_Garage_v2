@@ -1,11 +1,14 @@
 package com.example.hillel_garage_v2.service;
 
 import com.example.hillel_garage_v2.model.Owner;
-import com.example.hillel_garage_v2.repository.Dao.OwnerRepository;
+import com.example.hillel_garage_v2.repository.OwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 public class OwnerService {
@@ -17,24 +20,20 @@ public class OwnerService {
         this.ownerRepository = ownerRepository;
     }
 
-    public List<Owner> getAll() {
-        return ownerRepository.getAll();
+    public List<Owner> findAll() {
+        return ownerRepository.findAll();
     }
 
     public Owner findById(int id) {
-        return ownerRepository.findById(id);
+        return ownerRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
-    public void addNew(Owner owner) {
+    public void save(Owner owner) {
         ownerRepository.save(owner);
     }
 
-    public void update(Owner incomingData) {
-        ownerRepository.update(incomingData);
-    }
-
-    public void delete(int id) {
-        ownerRepository.delete(id);
+    public void deleteById(int id) {
+        ownerRepository.deleteById(id);
     }
 
 }
