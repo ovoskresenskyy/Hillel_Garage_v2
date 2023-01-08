@@ -28,8 +28,8 @@ public class OwnerService {
         return ownerRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
-    public void save(Owner owner) {
-        ownerRepository.save(owner);
+    public Owner save(Owner owner) {
+        return ownerRepository.save(owner);
     }
 
     public void deleteById(int id) {

@@ -1,6 +1,7 @@
 package com.example.hillel_garage_v2.service;
 
 import com.example.hillel_garage_v2.model.Car;
+import com.example.hillel_garage_v2.model.Owner;
 import com.example.hillel_garage_v2.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,8 +29,8 @@ public class CarService {
         return carRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
-    public void save(Car car) {
-        carRepository.save(car);
+    public Car save(Car car) {
+        return carRepository.save(car);
     }
 
     public void deleteById(int id) {
