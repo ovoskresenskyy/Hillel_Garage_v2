@@ -19,11 +19,11 @@ public class OwnerController {
 
     @GetMapping
     public String getAll(Model model) {
-        model.addAttribute("owners", ownerService.getAll());
+        model.addAttribute("owners", ownerService.findAll());
         return "owners/list";
     }
 
-    @GetMapping("/add_new_form")
+    @GetMapping("/registration")
     public String addNewForm(Model model) {
         model.addAttribute("owner", Owner.builder().build());
         return "/owners/new";
@@ -31,25 +31,19 @@ public class OwnerController {
 
     @PostMapping
     public String saveOwner(@ModelAttribute("owner") Owner owner) {
-        ownerService.addNew(owner);
+        ownerService.save(owner);
         return "redirect:/owners";
     }
 
-    @GetMapping("/update_form/{id}")
+    @GetMapping("/{id}/updating")
     public String updateForm(@PathVariable(value = "id") int id, Model model) {
         model.addAttribute("owner", ownerService.findById(id));
         return "owners/update";
     }
 
-    @PostMapping("/update")
-    public String updateOwner(@ModelAttribute("owner") Owner owner) {
-        ownerService.update(owner);
-        return "redirect:/owners";
-    }
-
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public String deleteOwner(@PathVariable(value = "id") int id) {
-        ownerService.delete(id);
+        ownerService.deleteById(id);
         return "redirect:/owners";
     }
 }
