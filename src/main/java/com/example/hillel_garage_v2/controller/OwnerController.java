@@ -26,7 +26,7 @@ public class OwnerController {
     @GetMapping("/registration")
     public String addNewForm(Model model) {
         model.addAttribute("owner", Owner.builder().build());
-        return "/owners/new";
+        return "owners/new";
     }
 
     @PostMapping

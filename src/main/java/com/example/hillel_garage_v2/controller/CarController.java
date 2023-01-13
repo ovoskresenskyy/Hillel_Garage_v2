@@ -34,7 +34,7 @@ public class CarController {
         model.addAttribute("car", Car.builder()
                 .ownerID(owner_id)
                 .build());
-        return "/cars/new";
+        return "cars/new";
     }
 
     @PostMapping
