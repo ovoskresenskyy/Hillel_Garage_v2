@@ -36,4 +36,4 @@ build/
 /mvnw.cmd
 /mvnw
 /.mvn/wrapper/maven-wrapper.properties
-/src/main/resources/application.properties
+/src/main/resources/application-prod.properties
