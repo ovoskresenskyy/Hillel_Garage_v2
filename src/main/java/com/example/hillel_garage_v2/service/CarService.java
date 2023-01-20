@@ -22,12 +22,12 @@ public class CarService {
         this.carRepository = carRepository;
     }
 
-    @Cacheable(value = "allOwners")
+    @Cacheable(value = "allCars")
     public List<Car> findAllByOwnerID(int ownerID) {
         return carRepository.findAllByOwnerID(ownerID);
     }
 
-    @Cacheable(value = "owner", key = "#id")
+    @Cacheable(value = "car", key = "#id")
     public Car findById(int id) {
         return carRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
