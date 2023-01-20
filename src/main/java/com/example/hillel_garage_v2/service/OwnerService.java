@@ -3,6 +3,7 @@ package com.example.hillel_garage_v2.service;
 import com.example.hillel_garage_v2.model.Owner;
 import com.example.hillel_garage_v2.repository.OwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,10 +21,12 @@ public class OwnerService {
         this.ownerRepository = ownerRepository;
     }
 
+    @Cacheable(value = "allOwners")
     public List<Owner> findAll() {
         return ownerRepository.findAll();
     }
 
+    @Cacheable(value = "owner", key = "#id")
     public Owner findById(int id) {
         return ownerRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
