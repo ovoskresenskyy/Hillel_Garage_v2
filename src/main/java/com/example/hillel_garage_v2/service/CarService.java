@@ -1,10 +1,11 @@
 package com.example.hillel_garage_v2.service;
 
 import com.example.hillel_garage_v2.model.Car;
-import com.example.hillel_garage_v2.model.Owner;
 import com.example.hillel_garage_v2.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,7 +23,7 @@ public class CarService {
         this.carRepository = carRepository;
     }
 
-    @Cacheable(value = "allCars")
+    @Cacheable(value = "ownersCars")
     public List<Car> findAllByOwnerID(int ownerID) {
         return carRepository.findAllByOwnerID(ownerID);
     }
@@ -32,10 +33,16 @@ public class CarService {
         return carRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "ownersCars", allEntries = true),
+            @CacheEvict(value = "car", key = "#car.id")})
     public Car save(Car car) {
         return carRepository.save(car);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "ownersCars", allEntries = true),
+            @CacheEvict(value = "car", key = "#id")})
     public void deleteById(int id) {
         carRepository.deleteById(id);
     }
