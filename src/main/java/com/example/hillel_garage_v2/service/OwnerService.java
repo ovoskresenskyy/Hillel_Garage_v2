@@ -3,7 +3,9 @@ package com.example.hillel_garage_v2.service;
 import com.example.hillel_garage_v2.model.Owner;
 import com.example.hillel_garage_v2.repository.OwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -31,10 +33,16 @@ public class OwnerService {
         return ownerRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "allOwners", allEntries = true),
+            @CacheEvict(value = "owner", key = "#owner.id")})
     public Owner save(Owner owner) {
         return ownerRepository.save(owner);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "allOwners", allEntries = true),
+            @CacheEvict(value = "owner", key = "#id")})
     public void deleteById(int id) {
         ownerRepository.deleteById(id);
     }
