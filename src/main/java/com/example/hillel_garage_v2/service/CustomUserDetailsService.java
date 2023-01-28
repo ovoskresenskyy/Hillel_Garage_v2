@@ -1,34 +1,37 @@
 package com.example.hillel_garage_v2.service;
 
-import com.example.hillel_garage_v2.entity.SessionUser;
-import com.example.hillel_garage_v2.repository.SessionUserRepository;
+import com.example.hillel_garage_v2.entity.User;
+import com.example.hillel_garage_v2.repository.RoleRepository;
+import com.example.hillel_garage_v2.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final SessionUserRepository sessionUserRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    public CustomUserDetailsService(SessionUserRepository sessionUserRepository) {
-        this.sessionUserRepository = sessionUserRepository;
+    public CustomUserDetailsService(UserRepository userRepository,
+                                    RoleRepository repository) {
+
+        this.userRepository = userRepository;
+        this.roleRepository = repository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        SessionUser sessionUser = sessionUserRepository.findByEmail(email);
 
-        if (sessionUser != null) {
-            return new User(sessionUser.getEmail(),
-                    sessionUser.getPassword(),
-                    List.of(sessionUser.getRole()));
+        User user = userRepository.findByEmail(email);
+
+        if (user != null) {
+            return new org.springframework.security.core.userdetails.User(user.getEmail(),
+                    user.getPassword(),
+                    roleRepository.findAllByUserId(user.getId()));
         } else throw new UsernameNotFoundException("Invalid username or password.");
     }
 }
