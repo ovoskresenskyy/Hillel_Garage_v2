@@ -1,6 +1,5 @@
 package com.example.hillel_garage_v2.entity;
 
-import com.example.hillel_garage_v2.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "session_user", schema = "public")
-public class SessionUser {
+@Table(name = "user", schema = "public")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +26,4 @@ public class SessionUser {
 
     @Column(nullable = false)
     private String password;
-
-    @Column
-    private Role role;
 }
