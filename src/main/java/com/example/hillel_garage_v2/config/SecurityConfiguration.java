@@ -24,7 +24,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public static PasswordEncoder passwordEncoder(){
+    public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -32,14 +32,16 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests((authorize) ->
-                        authorize.requestMatchers("/register/**").permitAll()
-                                .requestMatchers("/index").permitAll()
-                                .requestMatchers("/users").hasRole("ADMIN")
+                        authorize
+                                .requestMatchers("/register/**", "/users").permitAll()
+                                .requestMatchers("/owners").hasAnyAuthority("USER")
+                                .anyRequest().authenticated()
+                                .and()
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
                                 .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/users")
+                                .defaultSuccessUrl("/owners")
                                 .permitAll()
                 ).logout(
                         logout -> logout
