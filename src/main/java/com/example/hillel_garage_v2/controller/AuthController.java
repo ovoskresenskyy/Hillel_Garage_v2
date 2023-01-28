@@ -20,11 +20,6 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @GetMapping("/index")
-    public String home() {
-        return "security/index";
-    }
-
     @GetMapping("/login")
     public String login() {
         return "security/login";
