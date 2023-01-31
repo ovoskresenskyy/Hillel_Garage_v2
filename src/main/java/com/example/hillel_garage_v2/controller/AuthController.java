@@ -46,8 +46,8 @@ public class AuthController {
         }
 
         if (result.hasErrors()) {
-            model.addAttribute("user", user);
-            return "/register";
+            model.addAttribute("user", User.builder().build());
+            return "redirect:/register?error";
         }
 
         userService.saveUser(user, "USER");
