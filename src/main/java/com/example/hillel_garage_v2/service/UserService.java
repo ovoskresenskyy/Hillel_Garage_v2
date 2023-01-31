@@ -34,9 +34,15 @@ public class UserService {
                 .password(passwordEncoder.encode(incomingData.getPassword()))
                 .build());
 
+        addRole(savedUser.getId(), role);
+
+        return savedUser;
+    }
+
+    private void addRole(int userId, String role) {
         roleRepository.save(Role.builder()
-                .role("USER")
-                .userId(savedUser.getId())
+                .role(role)
+                .userId(userId)
                 .build());
     }
 
