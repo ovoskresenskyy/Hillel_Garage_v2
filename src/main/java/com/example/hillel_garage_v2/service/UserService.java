@@ -1,7 +1,7 @@
 package com.example.hillel_garage_v2.service;
 
-import com.example.hillel_garage_v2.entity.Role;
-import com.example.hillel_garage_v2.entity.User;
+import com.example.hillel_garage_v2.model.Role;
+import com.example.hillel_garage_v2.model.User;
 import com.example.hillel_garage_v2.repository.RoleRepository;
 import com.example.hillel_garage_v2.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

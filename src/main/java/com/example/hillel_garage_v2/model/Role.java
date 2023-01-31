@@ -1,28 +1,25 @@
-package com.example.hillel_garage_v2.entity;
+package com.example.hillel_garage_v2.model;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.security.core.GrantedAuthority;
 
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "roles", schema = "public")
+@Table("roles")
 public class Role implements GrantedAuthority {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(nullable = false)
     private String role;
-
-    @Column(name = "user_id", nullable = false)
+    @Column("user_id")
     private int userId;
 
     @Override

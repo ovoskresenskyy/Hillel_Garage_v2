@@ -1,6 +1,6 @@
 package com.example.hillel_garage_v2.repository;
 
-import com.example.hillel_garage_v2.entity.Role;
+import com.example.hillel_garage_v2.model.Role;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

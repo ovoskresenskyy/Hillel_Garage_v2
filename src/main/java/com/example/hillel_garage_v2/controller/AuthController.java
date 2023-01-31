@@ -1,6 +1,6 @@
 package com.example.hillel_garage_v2.controller;
 
-import com.example.hillel_garage_v2.entity.User;
+import com.example.hillel_garage_v2.model.User;
 import com.example.hillel_garage_v2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
