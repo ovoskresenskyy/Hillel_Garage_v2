@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Optional;
+
 @Controller
 public class AuthController {
 
@@ -33,13 +35,14 @@ public class AuthController {
     }
 
     @PostMapping("/register/save")
-    public String registration(@ModelAttribute("user") User user, BindingResult result, Model model) {
-
-        User existingUser = userService.findByEmail(user.getEmail());
-        if (existingUser != null
-                && existingUser.getEmail() != null
-                && !existingUser.getEmail().isEmpty()) {
-            result.rejectValue("email", "IsExist", "There is already an account registered with the same email");
+    public String registration(@ModelAttribute("user") User user,
+                               BindingResult result,
+                               Model model) {
+        Optional<User> existingUser = userService.findByEmail(user.getEmail());
+        if (existingUser.isPresent()) {
+            result.rejectValue("email",
+                    "isExist",
+                    "There is already an account registered with the same email");
         }
 
         if (result.hasErrors()) {
