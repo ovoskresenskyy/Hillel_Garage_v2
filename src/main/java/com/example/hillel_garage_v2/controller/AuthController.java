@@ -50,7 +50,7 @@ public class AuthController {
             return "/register";
         }
 
-        userService.saveUser(user);
+        userService.saveUser(user, "USER");
         return "redirect:/login";
     }
 
