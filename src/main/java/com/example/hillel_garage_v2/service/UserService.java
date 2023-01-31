@@ -26,7 +26,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void saveUser(User incomingData) {
+    public User saveUser(User incomingData, String role) {
 
         User savedUser = userRepository.save(User.builder()
                 .name(incomingData.getName())
