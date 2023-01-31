@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -20,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("prod")
 public class CarControllerTest {
 
     @Autowired
@@ -32,8 +35,8 @@ public class CarControllerTest {
     private OwnerService ownerService;
 
     @Test
-    public void shouldReturnPageWithListOfOwnerCars() throws Exception {
-
+    @WithMockUser(authorities = {"USER"})
+    public void gettingCars_withAuthentication_shouldReturnPageOfCars() throws Exception {
         when(ownerService.findById(anyInt())).thenReturn(Owner.builder().build());
 
         mockMvc.perform(get("/cars/{owner_id}", anyInt()))
@@ -44,8 +47,15 @@ public class CarControllerTest {
     }
 
     @Test
-    public void shouldReturnRegistrationForm() throws Exception {
+    public void gettingCars_withoutAuthentication_shouldRedirectToLoginPage() throws Exception {
+        mockMvc.perform(get("/cars"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+    }
 
+    @Test
+    @WithMockUser(authorities = {"USER"})
+    public void gettingRegistrationFormTest() throws Exception {
         when(ownerService.findById(anyInt())).thenReturn(Owner.builder().build());
 
         mockMvc.perform(get("/cars/{owner_id}/registration", anyInt()))
@@ -56,19 +66,20 @@ public class CarControllerTest {
     }
 
     @Test
-    public void savingCarShouldRedirectToMainPage() throws Exception {
-
+    @WithMockUser(authorities = {"USER"})
+    public void savingCar_shouldRedirectToPageOfCars() throws Exception {
         when(carService.save(any())).thenReturn(Car.builder().build());
 
         mockMvc.perform(post("/cars")
                         .flashAttr("car", Car.builder().build())
                 )
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/cars/**"));
     }
 
     @Test
-    public void shouldReturnUpdatingForm() throws Exception {
-
+    @WithMockUser(authorities = {"USER"})
+    public void gettingUpdateFormTest() throws Exception {
         when(carService.findById(anyInt())).thenReturn(Car.builder().build());
         when(ownerService.findById(anyInt())).thenReturn(Owner.builder().build());
 
@@ -80,12 +91,14 @@ public class CarControllerTest {
     }
 
     @Test
-    public void deletingShouldRedirectToMainPage() throws Exception {
+    @WithMockUser(authorities = {"USER"})
+    public void deleting_shouldRedirectToPageOfCars() throws Exception {
 
         when(carService.findById(anyInt())).thenReturn(Car.builder().build());
         doNothing().when(carService).deleteById(anyInt());
 
         mockMvc.perform(delete("/cars/{id}", anyInt()))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/cars/**"));
     }
 }
